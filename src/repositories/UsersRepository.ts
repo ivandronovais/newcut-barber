@@ -1,4 +1,3 @@
-import { Request } from "express";
 import { prisma } from "../database/prisma";
 import { ICreate } from "../Interfaces/UsersInterface";
 
@@ -20,6 +19,19 @@ export class UsersRepository {
                 email
             }
         })
+        return result;
+    }
+    async update(name: string, newPassword: string, avatar_url: string) {
+        const result = await prisma.users.update({
+            where: {
+                //provide filters here
+            },
+            data: {
+                name,
+                password: newPassword,
+                avatar_url,
+            },
+        });
         return result;
     }
 }

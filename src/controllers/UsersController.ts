@@ -26,11 +26,16 @@ export class UsersController {
         }
     }
     async update(request: Request, response: Response, next: NextFunction) {
-        const {name, oldPassword, newPassword, avatar_url} = request.body;
-        console.log(request.file);
-        
+        const { name, oldPassword, newPassword } = request.body;
         try {
-
+            // Atualizar o avatar_url com a URL do Cloudinary
+            const updatedUser = await this.usersServices.update({
+                name,
+                oldPassword,
+                newPassword,
+                avatar_url: request.file
+            });
+            return response.status(200).json(updatedUser);
         } catch (error) {
             next(error);
         }

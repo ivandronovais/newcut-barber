@@ -1,11 +1,35 @@
 import { hash } from "bcrypt";
-import { ICreate } from "../Interfaces/UsersInterface";
+import { ICreate, IUpdate } from "../Interfaces/UsersInterface";
 import { UsersRepository } from "../repositories/UsersRepository";
+import { cloudinary } from "../config/cloudinary";
+import { UploadApiErrorResponse, UploadApiResponse } from "cloudinary";
+import { response } from "express";
 
 export class UsersServices {
+
     private usersRepository: UsersRepository;
     constructor() {
         this.usersRepository = new UsersRepository();
+    }
+    async update({ name, oldPassword, newPassword, avatar_url }: IUpdate) {
+        const uploadImage = avatar_url?.buffer;
+
+        const uploadResult: UploadApiResponse = await new Promise((resolve, reject) => {
+            const stream = cloudinary.uploader.upload_stream(
+                {
+                    folder: 'uploads/newcut_barber',
+                    format: 'png' || 'jpg' || 'jpeg',
+                },
+                (error: UploadApiErrorResponse | undefined, result: UploadApiResponse | undefined) => {
+                    if (result) {
+                        resolve(result);
+                    } else {
+                        reject(error);
+                    }
+                }
+            );
+            stream.end(uploadImage);
+        });
     }
 
     async create({ email, name, password }: ICreate) {

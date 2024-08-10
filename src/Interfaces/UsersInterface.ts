@@ -18,3 +18,6 @@ interface FileUpload {
     buffer: Buffer,
     size: number
 }
+export interface IPayload {
+    sub: string
+}

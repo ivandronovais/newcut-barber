@@ -25,6 +25,15 @@ export class UsersController {
             next(error);
         }
     }
+    async auth(request: Request, response: Response, next: NextFunction) {
+        const { email, password } = request.body;
+        try {
+            const result = await this.usersServices.auth(email, password);
+            return response.json(result);
+        } catch (error) {
+            next(error);
+        }
+    }
     async update(request: Request, response: Response, next: NextFunction) {
         const { name, oldPassword, newPassword } = request.body;
         try {
@@ -39,9 +48,5 @@ export class UsersController {
         } catch (error) {
             next(error);
         }
-    }
-
-    auth() {
-        //autenticacao do usuario
     }
 }

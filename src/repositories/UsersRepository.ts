@@ -22,16 +22,7 @@ export class UsersRepository {
         return result;
     }
     async update(name: string, newPassword: string, avatar_url: string) {
-        const result = await prisma.users.update({
-            where: {
-                //provide filters here
-            },
-            data: {
-                name,
-                password: newPassword,
-                avatar_url,
-            },
-        });
-        return result;
+        //const result = await prisma.users.update({});
+        //return result;
     }
 }
